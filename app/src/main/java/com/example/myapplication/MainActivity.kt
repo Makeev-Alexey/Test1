@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.blankFragment)
                 }else{
                     var bundle = Bundle()
-                    bundle.putString("URL", "????")
+                    bundle.putString("URL", "https://www.google.com/")
                     navController.navigate(R.id.fragmentWeb, bundle)
                 }
 
@@ -39,7 +39,10 @@ class MainActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<String?>, t: Throwable) {
                 println(t.message)
-                navController.navigate(R.id.blankFragment)
+                var bundle = Bundle()
+                bundle.putString("URL", "https://www.google.com/")
+                navController.navigate(R.id.fragmentWeb, bundle)
+//                navController.navigate(R.id.blankFragment)
             }
         })
     }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.example.myapplication.databinding.FragmentBlankBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -47,7 +48,7 @@ class BlankFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.button.setOnClickListener {
-
+            it.findNavController().navigate(R.id.blankFragment2)
         }
     }
 

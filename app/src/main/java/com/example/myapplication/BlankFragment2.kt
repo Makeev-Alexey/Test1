@@ -11,7 +11,6 @@ import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.myapplication.databinding.FragmentBlank2Binding
-import com.example.myapplication.databinding.FragmentBlankBinding
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -56,9 +55,12 @@ class BlankFragment2 : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        init()
         // Inflate the layout for this fragment
         _binding = FragmentBlank2Binding.inflate(inflater, container, false)
+        init()
+        binding.button.setOnClickListener{
+            onClickStart(it)
+        }
         return binding.root
     }
     fun onClickStart(view: View?) {
@@ -96,13 +98,13 @@ class BlankFragment2 : Fragment() {
         var factor_x = 1
         var factor_y = 3
         for (i in 0..36) {
-            if (deegre >= BlankFragment2.FACTOR * factor_x && deegre < BlankFragment2.Companion.FACTOR * factor_y) {
+            if (deegre >= FACTOR * factor_x && deegre < FACTOR * factor_y) {
                 text = numbers[i]
             }
             factor_x += 2
             factor_y += 2
         }
-        if (deegre >= BlankFragment2.Companion.FACTOR * 73 && deegre < 360 || deegre >= 0 && deegre < BlankFragment2.Companion.FACTOR * 1) text =
+        if (deegre >= FACTOR * 73 && deegre < 360 || deegre >= 0 && deegre < FACTOR * 1) text =
             numbers[numbers.size - 1]
         return text
     }
