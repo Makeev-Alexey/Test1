@@ -25,13 +25,11 @@ class MainActivity : AppCompatActivity() {
         var navController = navHostFragment.navController
         Controller.getApiArguments().getURLorNull().enqueue(object : Callback<String?>{
             override fun onResponse(call: Call<String?>, response: Response<String?>) {
-                println("im here1" + response.body().toString())
-                if (response.body().toString().isNotEmpty()) {
-                    println("im here")
+                if (response.body().toString().isEmpty()) {
                     navController.navigate(R.id.blankFragment)
                 }else{
                     var bundle = Bundle()
-                    bundle.putString("URL", "https://www.google.com/")
+                    bundle.putString("URL", response.body().toString())
                     navController.navigate(R.id.fragmentWeb, bundle)
                 }
 
@@ -39,10 +37,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<String?>, t: Throwable) {
                 println(t.message)
-                var bundle = Bundle()
-                bundle.putString("URL", "https://www.google.com/")
-                navController.navigate(R.id.fragmentWeb, bundle)
-//                navController.navigate(R.id.blankFragment)
+                navController.navigate(R.id.blankFragment)
             }
         })
     }

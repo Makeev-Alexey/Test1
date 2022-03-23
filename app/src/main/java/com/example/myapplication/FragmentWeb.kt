@@ -1,12 +1,15 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.myapplication.databinding.FragmentBlank2Binding
+import android.webkit.*
+import android.webkit.WebStorage.getInstance
 import com.example.myapplication.databinding.FragmentWebBinding
+import java.net.CookieManager
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,6 +45,7 @@ class FragmentWeb : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var bundle = arguments
@@ -51,10 +55,10 @@ class FragmentWeb : Fragment() {
             binding.web.settings.displayZoomControls = false
 
             binding.web.settings.loadWithOverviewMode = true
-            binding.web.settings.useWideViewPort = true
-
+            binding.web.settings.useWideViewPort = false
+            android.webkit.CookieManager.getInstance().setAcceptThirdPartyCookies(binding.web, true)
             binding.web.settings.domStorageEnabled = true
-            binding.web.settings.javaScriptEnabled
+            binding.web.settings.javaScriptEnabled = true
             binding.web.settings.setAppCacheEnabled(true)
             if (url != null) {
                 binding.web.loadUrl(url)

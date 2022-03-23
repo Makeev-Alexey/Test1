@@ -59,6 +59,9 @@ class BlankFragment2 : Fragment() {
         _binding = FragmentBlank2Binding.inflate(inflater, container, false)
         init()
         binding.button.setOnClickListener{
+            if (savedInstanceState != null){
+                binding.tvResult.text = savedInstanceState.getString("result")
+            }
             onClickStart(it)
         }
         return binding.root
@@ -107,6 +110,11 @@ class BlankFragment2 : Fragment() {
         if (deegre >= FACTOR * 73 && deegre < 360 || deegre >= 0 && deegre < FACTOR * 1) text =
             numbers[numbers.size - 1]
         return text
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("result", binding.tvResult.text as String?)
     }
 
     companion object {
