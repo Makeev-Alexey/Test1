@@ -2,14 +2,14 @@ package com.example.myapplication
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.*
-import android.webkit.WebStorage.getInstance
+import android.webkit.CookieManager
+import android.webkit.WebViewClient
+import androidx.fragment.app.Fragment
 import com.example.myapplication.databinding.FragmentWebBinding
-import java.net.CookieManager
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +27,7 @@ class FragmentWeb : Fragment() {
     private var param2: String? = null
     private var _binding : FragmentWebBinding? = null
     private val binding get() = _binding!!
+    private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,7 @@ class FragmentWeb : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentWebBinding.inflate(inflater, container, false)
         return binding.root
@@ -48,23 +49,23 @@ class FragmentWeb : Fragment() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var bundle = arguments
+        val bundle = arguments
         if (bundle != null){
-            var url = bundle.getString("URL")
+            url = bundle.getString("URL")
+        }
             binding.web.settings.builtInZoomControls = true
             binding.web.settings.displayZoomControls = false
-
             binding.web.settings.loadWithOverviewMode = true
             binding.web.settings.useWideViewPort = false
-            android.webkit.CookieManager.getInstance().setAcceptThirdPartyCookies(binding.web, true)
             binding.web.settings.domStorageEnabled = true
             binding.web.settings.javaScriptEnabled = true
             binding.web.settings.setAppCacheEnabled(true)
+            CookieManager.getInstance().setAcceptThirdPartyCookies(binding.web, true)
+        binding.web.webViewClient = WebViewClient()
             if (url != null) {
-                binding.web.loadUrl(url)
+                binding.web.loadUrl(url!!)
             }
         }
-    }
 
     companion object {
         /**
