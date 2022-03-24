@@ -1,12 +1,16 @@
 package com.example.myapplication
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.CookieManager
+import android.webkit.WebChromeClient
+import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.myapplication.databinding.FragmentWebBinding
 
@@ -28,6 +32,7 @@ class FragmentWeb : Fragment() {
     private var _binding : FragmentWebBinding? = null
     private val binding get() = _binding!!
     private var url: String? = null
+    private lateinit var web: WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +51,7 @@ class FragmentWeb : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,18 +59,19 @@ class FragmentWeb : Fragment() {
         if (bundle != null){
             url = bundle.getString("URL")
         }
-            binding.web.settings.builtInZoomControls = true
-            binding.web.settings.displayZoomControls = false
-            binding.web.settings.loadWithOverviewMode = true
-            binding.web.settings.useWideViewPort = false
-            binding.web.settings.domStorageEnabled = true
-            binding.web.settings.javaScriptEnabled = true
-            binding.web.settings.setAppCacheEnabled(true)
-            CookieManager.getInstance().setAcceptThirdPartyCookies(binding.web, true)
-        binding.web.webViewClient = WebViewClient()
-            if (url != null) {
-                binding.web.loadUrl(url!!)
-            }
+        web = binding.web
+        web.settings.builtInZoomControls = true
+        web.settings.displayZoomControls = false
+        web.settings.loadWithOverviewMode = true
+        web.settings.useWideViewPort = false
+        web.settings.domStorageEnabled = true
+        web.settings.javaScriptEnabled = true
+        web.settings.setAppCacheEnabled(true)
+        CookieManager.getInstance().setAcceptThirdPartyCookies(binding.web, true)
+        web.webChromeClient = WebChromeClient()
+        web.webViewClient = WebViewClient()
+        web.webChromeClient!!.onRequestFocus(binding.web)
+        url?.let { web.loadUrl(it) }
         }
 
     companion object {
