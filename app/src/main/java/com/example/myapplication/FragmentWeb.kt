@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.CookieManager
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.myapplication.databinding.FragmentWebBinding
@@ -69,7 +66,13 @@ class FragmentWeb : Fragment() {
         web.settings.setAppCacheEnabled(true)
         CookieManager.getInstance().setAcceptThirdPartyCookies(binding.web, true)
         web.webChromeClient = WebChromeClient()
-        web.webViewClient = WebViewClient()
+        web.webViewClient = object: WebViewClient(){
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                CookieSyncManager.getInstance().sync()
+            }
+
+        }
         web.webChromeClient!!.onRequestFocus(binding.web)
         url?.let { web.loadUrl(it) }
         }
@@ -93,5 +96,15 @@ class FragmentWeb : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onPause() {
+        web.onPause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        web.onResume()
     }
 }
